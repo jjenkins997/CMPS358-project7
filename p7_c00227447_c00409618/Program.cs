@@ -11,6 +11,10 @@ listDiscontinued();
 Console.WriteLine("Please Enter a Country: ");
 countryCustomers(Console.ReadLine());
 
+//Method c) given a country list id, name, phone number, fax number and city of all suppliers in country
+Console.WriteLine("Please Enter a Country: ");
+countrySuppliers(Console.ReadLine());
+
 static void listDiscontinued()
 {
     using var db = new SmallBusiness();
@@ -41,6 +45,27 @@ static void countryCustomers(string country)
         Console.WriteLine("Cusomters in " + country + ":");
         foreach (var e in results)
             Console.WriteLine(e.FirstName + " " + e.LastName + " " + e.Phone);
+        Console.WriteLine();
+    }
+}
+
+static void countrySuppliers(string country)
+{
+    using var db = new SmallBusiness();
+    {
+        var results = from n in db.Suppliers where n.Country == country select n;
+        if (results.Count() == 0)
+        {
+            Console.WriteLine($"No Suppliers in this country");
+            return;
+        }
+
+        foreach (var e in results)
+        {
+            Console.Write(e.Id + " " + e.CompanyName + " " + e.Phone + " ");
+            Console.Write(String.IsNullOrEmpty(e.Fax) ? "No Fax Machine " : e.Fax + " ");
+            Console.WriteLine(e.City);
+        }
         Console.WriteLine();
     }
 }
