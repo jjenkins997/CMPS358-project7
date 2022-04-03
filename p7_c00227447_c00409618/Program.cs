@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Microsoft.EntityFrameworkCore.Design;
 using p7_c00227447_c00409618;
 
@@ -8,12 +9,16 @@ using p7_c00227447_c00409618;
 listDiscontinued();
 
 //Method b) given a country give all names and numbers of customers in that country
-Console.WriteLine("Please Enter a Country: ");
+Console.WriteLine("Please Enter a Country for customer information: ");
 countryCustomers(Console.ReadLine());
 
 //Method c) given a country list id, name, phone number, fax number and city of all suppliers in country
-Console.WriteLine("Please Enter a Country: ");
+Console.WriteLine("Please Enter a Country for supplier information: ");
 countrySuppliers(Console.ReadLine());
+
+//Method d) given a supplier find all products supplied not discontinued, display supplier name, package name, unit price and package info
+Console.WriteLine("Please enter a supplier for product information: ");
+supplierProducts(Console.ReadLine());
 
 static void listDiscontinued()
 {
@@ -67,5 +72,24 @@ static void countrySuppliers(string country)
             Console.WriteLine(e.City);
         }
         Console.WriteLine();
+    }
+}
+
+static void supplierProducts(string supplier)
+{
+    using var db = new SmallBusiness();
+    {
+        //join the tables set supplier id equal to supplierId in products where the product isnt discontinued
+        var results = from s in db.Suppliers join p in db.Products 
+            on s.Id equals p.SupplierId where s.CompanyName == supplier where p.IsDiscontinued.ToString() == "0" select p;
+        if (results.Count() == 0)
+        {
+            Console.WriteLine("Supplier does not exist");
+            return;
+        }
+        foreach(var e in results)
+            Console.WriteLine(supplier+ " " + e.ProductName + " " + "Unit Price: " +Encoding.UTF8.GetString(e.UnitPrice) + " " + e.Package);
+        Console.WriteLine();
+
     }
 }
