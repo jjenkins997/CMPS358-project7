@@ -20,6 +20,10 @@ countrySuppliers(Console.ReadLine());
 Console.WriteLine("Please enter a supplier for product information: ");
 supplierProducts(Console.ReadLine());
 
+//Method e) Given an order number find customer and all items in order and total cost of order, display name, unit price, quanity, and subtotal of each item in the order
+Console.WriteLine("Please enter an order number: ");
+customerOrder(Console.ReadLine());
+
 static void listDiscontinued()
 {
     using var db = new SmallBusiness();
@@ -91,5 +95,41 @@ static void supplierProducts(string supplier)
             Console.WriteLine(supplier+ " " + e.ProductName + " " + "Unit Price: " +Encoding.UTF8.GetString(e.UnitPrice) + " " + e.Package);
         Console.WriteLine();
 
+    }
+}
+
+static void customerOrder(string orderNumber)
+{
+    using var db = new SmallBusiness();
+    {
+        //join order and order item then join that new table with product and then finally that table with customer
+        var results = from order in db.Orders
+            join orderitem in db.OrderItems
+                on order.Id equals orderitem.OrderId
+            join product in db.Products on orderitem.ProductId equals product.Id
+            join customer in db.Customers on order.CustomerId equals customer.Id
+            where order.OrderNumber == orderNumber
+            select new {order, orderitem, product, customer};
+        if (results.Count() == 0)
+        {
+            Console.WriteLine("Order does not exist");
+            return;
+        }
+        //Display the Name Just once instead of every iteration
+        foreach (var e in results)
+        {
+            Console.WriteLine(e.customer.FirstName + " " + e.customer.LastName +":");
+            break;
+        }
+        //display name, unit price, and total
+        foreach(var e in results)
+            Console.WriteLine(e.product.ProductName + " Unit Price: " + Encoding.UTF8.GetString(e.orderitem.UnitPrice) + " Quantity: " + e.orderitem.Quantity + " Subtotal: " + double.Parse(Encoding.UTF8.GetString(e.orderitem.UnitPrice)) * Convert.ToDouble(e.orderitem.Quantity));
+        //display total amount
+        foreach (var e in results)
+        {
+            Console.WriteLine("Total Amount: "+ Encoding.UTF8.GetString(e.order.TotalAmount));
+            break;
+        }
+        Console.WriteLine();
     }
 }
