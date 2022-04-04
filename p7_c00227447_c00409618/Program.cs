@@ -1,11 +1,55 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Update;
 using p7_c00227447_c00409618;
 
-//Method a) all discontinued products
+
+userMenu();
+
+void userMenu()
+{
+    Console.WriteLine("Enter  a  to view all discontinued products");
+    Console.WriteLine("Enter  b  to see the names and numbers of all customers in a country");
+    Console.WriteLine("Enter  c  to view the id, name, phone number, fax number and city of all suppliers in a country");
+    Console.WriteLine("Enter  d  to view find all products that are not discontinued by a supplier and display the supplier's name, package name, unit price and package info");
+    Console.WriteLine("Enter  e  to give an order number and view order and find a customer and all items in an order and total cost of order, display the name, unit price, quantity, and subtotal of each item in the order");
+    Console.WriteLine("Enter  n  to exit menu");
+}
+
+methodToDisplay(Console.ReadLine());
+
+void methodToDisplay(string methodLetter){
+    if (methodLetter != "n"){
+        switch (methodLetter)
+        {
+            case "a":
+                listDiscontinued();
+                break;
+            case "b":
+                Console.WriteLine("Please Enter a Country for supplier information: ");
+                countryCustomers(Console.ReadLine());
+                break;
+            case "c":
+                Console.WriteLine("Please Enter a Country for supplier information: ");
+                countrySuppliers(Console.ReadLine());
+                break;
+            case "d":
+                Console.WriteLine("Please enter a supplier for product information: ");
+                supplierProducts(Console.ReadLine());
+                break;
+            case "e":
+                Console.WriteLine("Please enter an order number: ");
+                customerOrder(Console.ReadLine());
+                break;
+        }
+        userMenu();
+        methodToDisplay(Console.ReadLine());
+    }
+}
+
+/*//Method a) all discontinued products
 listDiscontinued();
 
 //Method b) given a country give all names and numbers of customers in that country
@@ -20,9 +64,9 @@ countrySuppliers(Console.ReadLine());
 Console.WriteLine("Please enter a supplier for product information: ");
 supplierProducts(Console.ReadLine());
 
-//Method e) Given an order number find customer and all items in order and total cost of order, display name, unit price, quanity, and subtotal of each item in the order
+//Method e) Given an order number find customer and all items in order and total cost of order, display name, unit price, quantity, and subtotal of each item in the order
 Console.WriteLine("Please enter an order number: ");
-customerOrder(Console.ReadLine());
+customerOrder(Console.ReadLine());*/
 
 static void listDiscontinued()
 {
