@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Jahzah Jenkins Tomas Parker
+// C00227447 C00409618
+// CMPS 358
+// project #7
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Design;
@@ -24,21 +29,26 @@ void methodToDisplay(string methodLetter){
     if (methodLetter != "n"){
         switch (methodLetter)
         {
+            //Method a) all discontinued products
             case "a":
                 listDiscontinued();
                 break;
+            //Method b) given a country give all names and numbers of customers in that country
             case "b":
                 Console.WriteLine("Please Enter a Country for supplier information: ");
                 countryCustomers(Console.ReadLine());
                 break;
+            //Method c) given a country list id, name, phone number, fax number and city of all suppliers in country
             case "c":
                 Console.WriteLine("Please Enter a Country for supplier information: ");
                 countrySuppliers(Console.ReadLine());
                 break;
+            //Method d) given a supplier find all products supplied not discontinued, display supplier name, package name, unit price and package info
             case "d":
                 Console.WriteLine("Please enter a supplier for product information: ");
                 supplierProducts(Console.ReadLine());
                 break;
+            //Method e) Given an order number find customer and all items in order and total cost of order, display name, unit price, quantity, and subtotal of each item in the order
             case "e":
                 Console.WriteLine("Please enter an order number: ");
                 customerOrder(Console.ReadLine());
@@ -49,29 +59,11 @@ void methodToDisplay(string methodLetter){
     }
 }
 
-/*//Method a) all discontinued products
-listDiscontinued();
-
-//Method b) given a country give all names and numbers of customers in that country
-Console.WriteLine("Please Enter a Country for customer information: ");
-countryCustomers(Console.ReadLine());
-
-//Method c) given a country list id, name, phone number, fax number and city of all suppliers in country
-Console.WriteLine("Please Enter a Country for supplier information: ");
-countrySuppliers(Console.ReadLine());
-
-//Method d) given a supplier find all products supplied not discontinued, display supplier name, package name, unit price and package info
-Console.WriteLine("Please enter a supplier for product information: ");
-supplierProducts(Console.ReadLine());
-
-//Method e) Given an order number find customer and all items in order and total cost of order, display name, unit price, quantity, and subtotal of each item in the order
-Console.WriteLine("Please enter an order number: ");
-customerOrder(Console.ReadLine());*/
-
 static void listDiscontinued()
 {
     using var db = new SmallBusiness();
     {
+        //get products where IsDiscontinued == 1 meaning true
         var results = from n in db.Products where n.IsDiscontinued.ToString() == "1" select n;
         if (results.Count() == 0)
         {
@@ -89,6 +81,7 @@ static void countryCustomers(string country)
 {
     using var db = new SmallBusiness();
     {
+        //find customer data the matches the given country
         var results = from n in db.Customers where n.Country == country select n;
         if (results.Count() == 0)
         {
@@ -106,6 +99,7 @@ static void countrySuppliers(string country)
 {
     using var db = new SmallBusiness();
     {
+        //get supplier data that mathces the given country
         var results = from n in db.Suppliers where n.Country == country select n;
         if (results.Count() == 0)
         {
